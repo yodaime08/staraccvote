@@ -51,7 +51,7 @@ export default function VotingApp() {
     }
   };
 
-  const removeCandidate = (id) => {
+  const removeCandidate = (id: number | null) => {
     setCandidates(candidates.filter(candidate => candidate.id !== id));
     setPlayers(players.map(player => 
       player.currentVote === id ? { ...player, currentVote: null } : player
@@ -66,15 +66,15 @@ export default function VotingApp() {
     }
   };
 
-  const removePlayer = (id) => {
+  const removePlayer = (id: number) => {
     setPlayers(players.filter(player => player.id !== id));
   };
 
-  const handleVote = (playerId, candidateId) => {
+  /*const handleVote = (playerId: number, candidateId: string) => {
     setPlayers(players.map(player =>
       player.id === playerId ? { ...player, currentVote: parseInt(candidateId) } : player
     ));
-  };
+  };*/
 
   const handleElimination = () => {
     if (selectedElimination) {
@@ -101,6 +101,10 @@ export default function VotingApp() {
   };
 
   const activeCandidates = candidates.filter(c => c.status === 'active');
+
+  function handleVote(id: number, value: string): void {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -139,7 +143,7 @@ export default function VotingApp() {
                         </div>
                         <Select
                           onValueChange={(value) => handleVote(player.id, value)}
-                          value={player.currentVote?.toString()}
+                          value={player.currentVote == null ? "" : player.currentVote}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Choisir un candidat" />
@@ -166,8 +170,8 @@ export default function VotingApp() {
               ) : (
                 <>
                   <Select
-                    onValueChange={(value) => setSelectedElimination(parseInt(value))}
-                    value={selectedElimination?.toString()}
+                    onValueChange={(value) => setSelectedElimination(null)}
+                    value={selectedElimination == null ? "" : selectedElimination}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Choisir le candidat éliminé" />
